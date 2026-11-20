@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Automation test page</title><style>
+body{font-family:system-ui;margin:40px;color:#252b34;background:#f8fafc}button,input{font:inherit;min-height:40px;padding:8px 16px}button{background:#325cdc;color:white;border:0;border-radius:6px}section{margin:24px 0;padding:24px;background:white;border:1px solid #dde1e8;border-radius:8px}canvas{border:1px solid #ccd1da}code{font:inherit}p{color:#616b78}
+</style></head><body><h1>Ready to automate</h1><p>This local page is provided for testing. Every profile should retain its own value.</p>
+<section><h2>Element click</h2><button id="counter">Clicks: 0</button><p>Selector: <code>#counter</code></p><div id="last">No clicks yet</div></section>
+<section><h2>Profile isolation</h2><input id="identity" placeholder="Enter a unique profile value"><button id="save">Save identity</button><p id="stored"></p></section>
+<section><h2>Coordinate click</h2><canvas id="canvas" width="440" height="120"></canvas><p>Choose Record point in the panel, then click inside this canvas.</p></section>
+<script>
+let clicks=0,canvasClicks=0;const counter=document.querySelector('#counter');counter.onclick=e=>{counter.textContent='Clicks: '+(++clicks);document.querySelector('#last').textContent='Trusted: '+e.isTrusted+' / '+new Date().toLocaleTimeString()};
+function show(){document.querySelector('#stored').textContent='Storage: '+(localStorage.getItem('identity')||'(empty)')+' | Cookie: '+(document.cookie||'(empty)')};
+document.querySelector('#save').onclick=()=>{const v=document.querySelector('#identity').value;localStorage.setItem('identity',v);document.cookie='identity='+encodeURIComponent(v)+';path=/;SameSite=Strict;Max-Age=86400';show()};show();
+const canvas=document.querySelector('canvas'),c=canvas.getContext('2d');function draw(){c.fillStyle='#eef2ff';c.fillRect(0,0,440,120);c.fillStyle='#253b74';c.fillText('Canvas clicks: '+canvasClicks,24,60)};canvas.onclick=()=>{canvasClicks++;draw()};draw();
+</script></body></html>
